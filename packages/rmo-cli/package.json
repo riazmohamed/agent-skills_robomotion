@@ -1,0 +1,23 @@
+{
+  "name": "@rmo/cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "rmo": "src/index.ts"
+  },
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "build": "bun build src/index.ts --target=bun --outfile=dist/rmo.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@rmo/core": "workspace:*",
+    "commander": "^12.1.0",
+    "ink": "^6.8.0",
+    "react": "^19.2.5"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14"
+  }
+}

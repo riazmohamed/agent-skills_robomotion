@@ -1,0 +1,19 @@
+{
+  "name": "agent-skills_robomotion",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "bun run --filter='*' build",
+    "typecheck": "bun run --filter='*' typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "@types/bun": "latest"
+  },
+  "dependencies": {
+    "react-devtools-core": "^7.0.1"
+  }
+}

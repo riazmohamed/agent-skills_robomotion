@@ -3,6 +3,11 @@
     "browser": {
       "type": "stdio",
       "command": "robomotion-browser-mcp"
+    },
+    "rmo": {
+      "type": "stdio",
+      "command": "bun",
+      "args": ["run", "packages/rmo-mcp/src/index.ts"]
     }
   }
 }

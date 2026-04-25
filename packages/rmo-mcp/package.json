@@ -1,0 +1,18 @@
+{
+  "name": "@rmo/mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "rmo-mcp": "src/index.ts"
+  },
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "build": "bun build src/index.ts --target=bun --outfile=dist/rmo-mcp.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@rmo/core": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  }
+}
