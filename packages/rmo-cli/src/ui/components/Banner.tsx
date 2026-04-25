@@ -18,8 +18,6 @@ export function Banner({ version, cwd, workspace, authed }: BannerProps) {
   const home = process.env.HOME ?? "";
   const displayPath = home && cwd.startsWith(home) ? "~" + cwd.slice(home.length) : cwd;
 
-  const shift = 0;
-
   // Always use stacked layout: logo on top, info below.
   // Side-by-side layout breaks in split-pane terminals (e.g. Warp) where
   // stdout.columns reports full terminal width, not individual pane width,
@@ -27,9 +25,11 @@ export function Banner({ version, cwd, workspace, authed }: BannerProps) {
   return (
     <Box flexDirection="column" marginTop={1} marginBottom={1} width={columns}>
       <Box flexDirection="column">
-        <GradientText text={LOGO_LINES[0]!} shift={shift} />
-        <GradientText text={LOGO_LINES[1]!} shift={shift} />
-        <GradientText text={LOGO_LINES[2]!} shift={shift} />
+        {LOGO_LINES.map((line, i) => (
+          <Text key={i} color={rowColor(i, LOGO_LINES.length)}>
+            {line}
+          </Text>
+        ))}
       </Box>
       <Box marginTop={1}>
         {/* Logo wordmark already says "ROBOMOTION CLI" — just show version + workspace. */}
@@ -60,22 +60,18 @@ export function Banner({ version, cwd, workspace, authed }: BannerProps) {
   );
 }
 
-function GradientText({ text, shift = 0 }: { text: string; shift?: number }) {
-  const chars: React.ReactNode[] = [];
-  let colorIdx = 0;
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i];
-    if (ch === " ") {
-      chars.push(ch);
-    } else {
-      const color = GRADIENT[(colorIdx + shift) % GRADIENT.length];
-      chars.push(
-        <Text key={i} color={color}>
-          {ch}
-        </Text>,
-      );
-      colorIdx++;
-    }
-  }
-  return <Text>{chars}</Text>;
+/**
+ * Pick the gradient color for a given logo row.
+ * Maps row index across the cyan→purple half of the GRADIENT (first 7 stops),
+ * so each row is one solid color and the gradient flows top→bottom.
+ * Per-character gradient is intentionally avoided — it shreds letterform
+ * cohesion on multi-row figlet glyphs (each cell of one letter ends up a
+ * different color, so the eye can't group strokes into letters).
+ */
+function rowColor(rowIdx: number, totalRows: number): string {
+  // GRADIENT is a palindrome (cyan → purple → cyan); use only the forward half.
+  const forward = GRADIENT.slice(0, 7);
+  const t = totalRows <= 1 ? 0 : rowIdx / (totalRows - 1);
+  const idx = Math.min(forward.length - 1, Math.round(t * (forward.length - 1)));
+  return forward[idx]!;
 }
