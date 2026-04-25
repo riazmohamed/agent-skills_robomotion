@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Text } from "ink";
 import { useTheme } from "../theme/theme.ts";
 import { useTerminalSize } from "../hooks/useTerminalSize.ts";
+import { LOGO_LINES, GRADIENT } from "../constants/banner.ts";
 
 interface BannerProps {
   version: string;
@@ -9,28 +10,6 @@ interface BannerProps {
   workspace?: string;
   authed: boolean;
 }
-
-const LOGO_LINES = [
-  " \u2584\u2580\u2580\u2584 \u2584\u2584 \u2584\u2584\u2584  \u2584\u2580\u2580\u2580\u2584",
-  " \u2588\u2584\u2584\u2580 \u2588\u2580\u2580\u2588 \u2588 \u2588   \u2588",
-  " \u2588  \u2588 \u2588  \u2588 \u2588  \u2580\u2584\u2584\u2580",
-];
-
-// Extended gradient with reverse path for smooth animation loop
-const GRADIENT = [
-  "#22d3ee",
-  "#38c5e9",
-  "#4eb7e4",
-  "#65a9df",
-  "#7b9bda",
-  "#928dd5",
-  "#a87fd0",
-  "#928dd5",
-  "#7b9bda",
-  "#65a9df",
-  "#4eb7e4",
-  "#38c5e9",
-];
 
 export function Banner({ version, cwd, workspace, authed }: BannerProps) {
   const theme = useTheme();

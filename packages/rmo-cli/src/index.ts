@@ -8,11 +8,12 @@ import { runCmd } from "./commands/run.ts";
 import { logsCmd } from "./commands/logs.ts";
 import { scheduleCmd } from "./commands/schedule.ts";
 import { runInteractive } from "./ui/render.tsx";
+import { CLI_VERSION } from "./ui/constants/banner.ts";
 
 const program = new Command()
   .name("rmo")
   .description("Drive Robomotion from the terminal — designed for Claude Code")
-  .version("0.1.0");
+  .version(CLI_VERSION);
 
 program.addCommand(doctorCmd);
 program.addCommand(authCmd);
@@ -25,7 +26,7 @@ program.addCommand(scheduleCmd);
 const NO_ARGS = process.argv.length === 2;
 const IS_TTY = !!process.stdout.isTTY && !!process.stdin.isTTY;
 if (NO_ARGS && IS_TTY) {
-  await runInteractive({ version: "0.1.0", cwd: process.cwd() });
+  await runInteractive({ version: CLI_VERSION, cwd: process.cwd() });
   process.exit(0);
 }
 

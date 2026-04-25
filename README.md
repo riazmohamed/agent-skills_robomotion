@@ -1,4 +1,8 @@
-<!-- logo placeholder -->
+```
+ ▄▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▄
+ █       ▀▄▀       █
+ ▀▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▀
+```
 
 # Robomotion Agent Skills
 
@@ -34,6 +38,15 @@ curl -LO https://raw.githubusercontent.com/robomotionio/agent-skills/main/.mcp.j
 ```
 
 Only installing a subset? `npx skills add` supports per-skill installation — check `npx skills --help`.
+
+## Banner
+
+The Robomotion CLI (`rmo`) renders a block-character logo banner with a cyan→purple gradient. It appears in exactly two places, once per invocation, with no duplicates:
+
+- **`rmo auth login`** — printed once after credentials are saved, as the post-save confirmation.
+- **`rmo`** (bare invocation) — printed once at REPL start, above the input prompt.
+
+The shared logo lives in `packages/rmo-cli/src/ui/constants/banner.ts` and is consumed by both the Ink `<Banner />` component (REPL) and the plain-text `printBanner()` helper (login), so the two paths cannot drift.
 
 ## Prerequisites
 

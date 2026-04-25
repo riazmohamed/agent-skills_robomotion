@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import { loadConfig, saveConfig, RobomotionClient } from "@rmo/core";
 import { emit, fail, color } from "../output.ts";
+import { printBanner, CLI_VERSION } from "../ui/constants/banner.ts";
 
 export const authCmd = new Command("auth").description("Authenticate to a Robomotion workspace");
 
@@ -16,9 +17,10 @@ authCmd
     const workspace = opts.workspace ?? existing.workspace;
     if (!apiKey) fail("--api-key is required (or set ROBOMOTION_API_KEY)");
     if (!workspace) fail("--workspace is required (e.g. myorg.robomotion.io)");
+    const cleanWorkspace = workspace.replace(/^https?:\/\//, "").replace(/\/$/, "");
     saveConfig({
       apiKey,
-      workspace: workspace.replace(/^https?:\/\//, "").replace(/\/$/, ""),
+      workspace: cleanWorkspace,
       apiBase: opts.apiBase ?? existing.apiBase,
       defaultRobot: existing.defaultRobot,
     });
@@ -30,6 +32,7 @@ authCmd
       const msg = e instanceof Error ? e.message : String(e);
       process.stdout.write(color("warn", `! auth.check failed: ${msg}`) + "\n");
     }
+    printBanner({ version: CLI_VERSION, workspace: cleanWorkspace, authed: true });
   });
 
 authCmd
