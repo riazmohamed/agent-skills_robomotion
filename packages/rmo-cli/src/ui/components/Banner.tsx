@@ -32,11 +32,8 @@ export function Banner({ version, cwd, workspace, authed }: BannerProps) {
         <GradientText text={LOGO_LINES[2]!} shift={shift} />
       </Box>
       <Box marginTop={1}>
-        <Text color={theme.primary} bold>
-          Robomotion CLI
-        </Text>
-        <Text color={theme.textDim}> v{version}</Text>
-        <Text color={theme.textDim}> · </Text>
+        {/* Logo wordmark already says "ROBOMOTION CLI" — just show version + workspace. */}
+        <Text color={theme.textDim}>v{version} · </Text>
         <Text color={theme.secondary}>{authed ? (workspace ?? "") : "not logged in"}</Text>
       </Box>
       <Box>

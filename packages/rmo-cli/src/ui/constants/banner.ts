@@ -1,8 +1,8 @@
-/** Logo rendered with Unicode block characters. 3 lines, ~20 chars wide. */
+/** "ROBOMOTION CLI" wordmark in Unicode block characters. 3 lines, 62 chars wide. */
 export const LOGO_LINES = [
-  " \u2584\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2584",
-  " \u2588       \u2580\u2584\u2580       \u2588",
-  " \u2580\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2580",
+  " \u2588\u2580\u2580\u2584 \u2584\u2580\u2580\u2584 \u2588\u2580\u2580\u2584 \u2584\u2580\u2580\u2584 \u2588\u2584 \u2584\u2588 \u2584\u2580\u2580\u2584 \u2580\u2588\u2580\u2580\u2580 \u2588 \u2584\u2580\u2580\u2584 \u2588\u2584  \u2588   \u2584\u2580\u2580 \u2588   \u2588",
+  " \u2588\u2580\u2588  \u2588  \u2588 \u2588\u2580\u2580\u2584 \u2588  \u2588 \u2588 \u2580 \u2588 \u2588  \u2588   \u2588   \u2588 \u2588  \u2588 \u2588 \u2580 \u2588   \u2588   \u2588   \u2588",
+  " \u2588  \u2580 \u2580\u2584\u2584\u2580 \u2580\u2584\u2584\u2580 \u2580\u2584\u2584\u2580 \u2588   \u2588 \u2580\u2584\u2584\u2580   \u2588   \u2588 \u2580\u2584\u2584\u2580 \u2588  \u2580\u2588   \u2580\u2584\u2584 \u2580\u2584\u2584 \u2588",
 ];
 
 /** Extended gradient with reverse path for smooth animation loop. */
@@ -40,7 +40,6 @@ export function printBanner(opts: {
     process.stdout.write(CYAN + line + RESET + "\n");
   }
   const status = authed ? (workspace ?? "") : "not logged in";
-  process.stdout.write(
-    `${CYAN}Robomotion CLI${RESET}${DIM} v${version} \u00b7 ${status}${RESET}\n`,
-  );
+  // Logo wordmark already says "ROBOMOTION CLI" — footer is just version + status.
+  process.stdout.write(`${CYAN}v${version}${RESET}${DIM} \u00b7 ${status}${RESET}\n`);
 }
