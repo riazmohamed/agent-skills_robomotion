@@ -871,8 +871,13 @@ var AppClient = class {
       case "pong":
         return;
       case "error": {
-        const hinted = Number(data.backoff ?? this.reconnectDelayMs);
-        const backoff = Number.isFinite(hinted) ? Math.min(Math.max(hinted, 0), MAX_RECONNECT_BACKOFF_MS) : this.reconnectDelayMs;
+        let backoff = Number(data.backoff ?? this.reconnectDelayMs);
+        if (!Number.isFinite(backoff) || backoff < 0) {
+          backoff = this.reconnectDelayMs;
+        }
+        if (backoff > MAX_RECONNECT_BACKOFF_MS) {
+          backoff = MAX_RECONNECT_BACKOFF_MS;
+        }
         this.connection.set("offline");
         try {
           this.ws?.close();
