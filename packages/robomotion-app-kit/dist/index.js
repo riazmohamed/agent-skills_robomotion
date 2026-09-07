@@ -3574,10 +3574,10 @@ import { AppError } from "@robomotion/apps-runtime";
 import { jsx as jsx9, jsxs as jsxs9 } from "react/jsx-runtime";
 function plainMessage(raw) {
   let s = raw.replace(/\r/g, "");
-  s = s.replace(/^\s*at\s+.*$/gm, "");
+  s = s.replace(/^[^\S\n]*at\s[^\n]*$/gm, "");
   s = s.split(/\s+/).filter(Boolean).join(" ");
   for (; ; ) {
-    const trimmed = s.replace(/\s+at\s+\S+\s*\([^)]*\)\s*$/, "");
+    const trimmed = s.replace(/\s at\s\S+ ?\([^)]*\) ?$/, "");
     if (trimmed === s) break;
     s = trimmed;
   }

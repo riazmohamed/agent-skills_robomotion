@@ -423,7 +423,11 @@ function submitButtonOf(form) {
 }
 function resolveSite(el) {
   if (el.tagName === "INPUT" && el.getAttribute("type") === "file") {
-    const label = el.closest("label") ?? (el.id ? document.querySelector(`label[for="${el.id.replace(/"/g, '\\"')}"]`) : null);
+    const label = el.closest("label") ?? (el.id ? (
+      // By property, not a hand-built selector: an id may contain quotes or
+      // backslashes, and escaping only quotes let those break out of it.
+      Array.from(document.querySelectorAll("label[for]")).find((l) => l.htmlFor === el.id) ?? null
+    ) : null);
     if (label) return label;
     const zone = el.closest(`[${ATTR_DROPZONE}]`) ?? el.parentElement?.querySelector(`[${ATTR_DROPZONE}]`) ?? null;
     if (zone) return zone;
@@ -1152,4 +1156,4 @@ export {
   markGesture,
   installLinks
 };
-//# sourceMappingURL=chunk-VKE7X2KZ.js.map
+//# sourceMappingURL=chunk-DWK5FP3E.js.map

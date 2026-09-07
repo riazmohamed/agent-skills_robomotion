@@ -13,7 +13,7 @@ import {
   splitLinkKey,
   tagAction,
   tagCollection
-} from "./chunk-VKE7X2KZ.js";
+} from "./chunk-DWK5FP3E.js";
 
 // src/collection.ts
 var Collection = class {
@@ -141,7 +141,7 @@ var Collection = class {
 function encodeArtifactId(addr) {
   const json = JSON.stringify({ f: addr.f, s: addr.s, u: addr.u, v: addr.v });
   const b64 = typeof btoa === "function" ? btoa(unescape(encodeURIComponent(json))) : Buffer.from(json, "utf-8").toString("base64");
-  return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+  return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/={1,2}$/, "");
 }
 function decodeArtifactId(artifactId) {
   try {
@@ -492,6 +492,7 @@ var DEFAULT_API_URL = "https://api.robomotion.io";
 var DEFAULT_PROXY_URL = "wss://amq.robomotion.io";
 var DEFAULT_TIMEOUT_MS = 3e4;
 var DEFAULT_RECONNECT_MS = 5e3;
+var MAX_RECONNECT_BACKOFF_MS = 6e4;
 var DEFAULT_PING_MS = 3e4;
 var DEFAULT_CALL_CONNECT_WAIT_MS = 8e3;
 var ROBOT_RECHECK_INTERVAL_MS = 5e3;
@@ -870,7 +871,8 @@ var AppClient = class {
       case "pong":
         return;
       case "error": {
-        const backoff = Number(data.backoff ?? this.reconnectDelayMs);
+        const hinted = Number(data.backoff ?? this.reconnectDelayMs);
+        const backoff = Number.isFinite(hinted) ? Math.min(Math.max(hinted, 0), MAX_RECONNECT_BACKOFF_MS) : this.reconnectDelayMs;
         this.connection.set("offline");
         try {
           this.ws?.close();
