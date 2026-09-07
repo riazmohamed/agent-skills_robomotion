@@ -38,7 +38,7 @@ For library files swap `flow` for `library` / `subflow`. Full reference: `./docs
 - ES5-only inside `func`: no `=>`, no template literals, no `const`/`let`, no destructuring. No `require()` / `fs` / `Buffer` / `process` (pure JS sandbox).
 - Loops: `Label → ForEach → body → GoTo`. `Stop` is standalone, wired via `f.edge()` on ForEach port 1.
 - Library projects use `library.create(id, name, fn)` with `Begin`/`End` nodes (no `.start()`). Inline subflows use `subflow.create(name, fn)`.
-- Every flow ends with `.start()`. Every flow has a `Core.Flow.Stop` node.
+- Every flow ends with `.start()`. Every flow has a `Core.Flow.Stop` node — **except an app backend**: a flow triggered by `Robomotion.Apps.Action` is a long-lived service behind a Robomotion App's screens and must never stop, so it has no `Stop` and no `End`. See the `building-app` skill.
 - `Core.*` packages (`Core.Trigger`, `Core.Browser`, `Core.Programming`, `Core.CSV`, `Core.Flow`, `Core.Vault`, `Core.Net`, `Core.Excel`, …) are **embedded in the robot** — NEVER call `f.addDependency('Core.*', …)`. The Designer auto-loads them. Only call `f.addDependency(ns, ver)` for non-`Core.*` packages. When updating an existing flow, NEVER bump existing `addDependency` versions; only add missing ones.
 - **Comments & canvas layout** — `Core.Flow.Comment` nodes (with an `optText` markdown string) title the flow and fence its logical phases; the visual arrangement — node `positions`, comment box colors/sizes, and Sugiyama-style layering — lives in `main.designer.ts`. Layout is cosmetic (never affects runtime) but it's what makes a flow readable. See `./docs/patterns/comments-and-layout.md`.
 
@@ -127,7 +127,7 @@ For schemas, examples, and package docs, use the `robomotion` CLI (it's already 
 
 Full step-by-step: **`./docs/workflow.md`**. Outline:
 
-0. **Gather requirements** (interactive only) — credentials (commit to a vault-item pick, don't quiz the user), URLs, files, iteration, error handling.
+0. **Gather requirements** (interactive only) — credentials (commit to a vault-item pick, don't quiz the user; **never ask for the secret itself** — `vault_picker`, or ask them to add it to Vault first: `./docs/patterns/credentials.md`), URLs, files, iteration, error handling.
 1. **Discover** — `robomotion search`, `robomotion get nodes`, `robomotion docs <namespace>` (MANDATORY for every non-`Core.*` package).
 2. **Plan** — output plan as chat text, then `AskUserQuestion(["Build it", "Modify plan"])`.
 3. **Write** — read 1-2 relevant `./docs/patterns/*.md`, verify property names with `robomotion describe node`, then `Write` `main.ts` (and any `subflows/<id>.ts`). For browser flows: explore live first.
